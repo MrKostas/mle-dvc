@@ -11,11 +11,17 @@ import yaml
 def create_connection():
 
     load_dotenv()
-    host = os.environ.get('DB_DESTINATION_HOST')
-    port = os.environ.get('DB_DESTINATION_PORT')
-    db = os.environ.get('DB_DESTINATION_NAME')
-    username = os.environ.get('DB_DESTINATION_USER')
-    password = os.environ.get('DB_DESTINATION_PASSWORD')
+    #host = os.environ.get('DB_DESTINATION_HOST')
+    #port = os.environ.get('DB_DESTINATION_PORT')
+    #db = os.environ.get('DB_DESTINATION_NAME')
+    #username = os.environ.get('DB_DESTINATION_USER')
+    #password = os.environ.get('DB_DESTINATION_PASSWORD')
+
+    host = 'rc1b-uh7kdmcx67eomesf.mdb.yandexcloud.net'
+    port = '6432'
+    db = 'playground_mle_20240729_6881d36768'
+    username = 'mle_20240729_6881d36768'
+    password = '8cafbb49e5d84363828cda27e88b75e4'
     
     print(f'postgresql://{username}:{password}@{host}:{port}/{db}')
     conn = create_engine(f'postgresql://{username}:{password}@{host}:{port}/{db}', connect_args={'sslmode':'require'})

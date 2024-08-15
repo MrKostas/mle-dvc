@@ -1,0 +1,37 @@
+schema: '2.0'
+stages:
+  fit_model:
+    cmd: python scripts/fit.py
+    deps:
+    - path: data/initial_data.csv
+      hash: md5
+    - path: scripts/fit.py
+      hash: md5
+    outs:
+    - path: models/fitted_model.pkl
+      hash: md5
+  get_data:
+    cmd: python scripts/data.py
+    deps:
+    - path: scripts/data.py
+      hash: md5
+      md5: 69ea276ecfe2e9303f0522bcccb38c55
+      size: 1709
+    params:
+      params.yaml:
+        index_col: customer_id
+    outs:
+    - path: data/initial_data.csv
+      hash: md5
+      md5: d24b4c025a965eaa8c952d06b3e2fc33
+      size: 262
+  evaluate_model:
+    cmd: python scripts/evaluate.py
+    deps:
+    - path: models/fitted_model.pkl
+      hash: md5
+    - path: scripts/evaluate.py
+      hash: md5
+    outs:
+    - path: cv_results/cv_res.json
+      hash: md5

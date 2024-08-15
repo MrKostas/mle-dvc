@@ -13,10 +13,11 @@ import joblib
 # обучение модели
 def fit_model():
     with open('params.yaml', 'r') as fd:
-        params = yaml.safe_load(fd)
+         params = yaml.safe_load(fd)
 
 	# загрузите результат предыдущего шага: inital_data.csv
     data = pd.read_csv('data/initial_data.csv')
+    print(data.head())
 
 	# реализуйте основную логику шага с использованием гиперпараметров
     cat_features = data.select_dtypes(include='object')
@@ -27,30 +28,26 @@ def fit_model():
     num_features = data.select_dtypes(['float'])
     
     preprocessor = ColumnTransformer(
-        [
-            ('binary', OneHotEncoder(drop='if_binary'), binary_cat_features.columns.tolist()),
-            ('cat', CatBoostEncoder(return_df=False), other_cat_features.columns.tolist()),
-            ('num', StandardScaler(), num_features.columns.tolist())
-        ],
-        remainder='drop',
-        verbose_feature_names_out=False
+    [
+    ('binary', OneHotEncoder(drop=params['one_hot_drop']), binary_cat_features.columns.tolist()),
+    ('cat', CatBoostEncoder(return_df=False), other_cat_features.columns.tolist()),
+    ('num', StandardScaler(), num_features.columns.tolist())
+    ],
+    remainder='drop',
+    verbose_feature_names_out=False
 )
-    model = CatBoostClassifier(auto_class_weights='Balanced')
+    model = CatBoostClassifier(auto_class_weights=params['auto_class_weights'])
     
     pipeline = Pipeline(
-        [
-            ('preprocessor', preprocessor),
-            ('model', model)
-        ]
+    [
+        ('preprocessor', preprocessor),
+        ('model', model)
+    ]
 )
     
-    model = pipeline.fit(data, data['target'])
-
-	# сохраните обученную модель в models/fitted_model.pkl
+    pipeline.fit(data, data[params['target_col']])
     os.makedirs('models', exist_ok=True) # создание директории, если её ещё нет
-    with open('models/fitted_model.pkl', 'wb') as fd:
-        joblib.dump(model, fd)
+    joblib.dump(pipeline, 'models/fitted_model.pkl')
     
-
 if __name__ == '__main__':
 	fit_model()
