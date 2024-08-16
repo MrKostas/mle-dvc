@@ -1,1 +1,1 @@
-{"fit_time": 0.105, "score_time": 0.063, "test_f1": 1.0, "test_roc_auc": 1.0}
+{"fit_time": 0.109, "score_time": 0.055, "test_f1": 1.0, "test_roc_auc": 1.0}
