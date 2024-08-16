@@ -1,15 +1,5 @@
 schema: '2.0'
 stages:
-  fit_model:
-    cmd: python scripts/fit.py
-    deps:
-    - path: data/initial_data.csv
-      hash: md5
-    - path: scripts/fit.py
-      hash: md5
-    outs:
-    - path: models/fitted_model.pkl
-      hash: md5
   get_data:
     cmd: python scripts/data.py
     deps:
