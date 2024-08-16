@@ -1,15 +1,14 @@
-# scripts/fit.py
-
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-# from category_encoders import CatBoostEncoder
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-# from catboost import CatBoostClassifier
 from sklearn.linear_model import LogisticRegression
+from category_encoders import CatBoostEncoder
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from catboost import CatBoostClassifier
 import yaml
 import os
 import joblib
+
 
 # обучение модели
 def fit_model():
@@ -33,7 +32,7 @@ def fit_model():
         remainder='drop',
         verbose_feature_names_out=False
     )
-	model = LogisticRegression(C = params['logreg_c'], penalty = params['penalty'])
+	model = LogisticRegression(C=params['logreg_c'],penalty=params['logreg_penalty'])
 	pipeline = Pipeline(
         [
             ('preprocessor', preprocessor),
